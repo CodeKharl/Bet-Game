@@ -1,23 +1,26 @@
 -- Simple bet game
 
-PLAYER = "P"
-BANKER = "B"
+PLAYER = "Player"
+BANKER = "Banker"
+
+player_sign = PLAYER:sub(1, 1)
+banker_sign = BANKER:sub(1, 1)
 
 local function winner_result(player_val, banker_val)
 	if player_val == banker_val then
+		print("Draw!")
 		return nil
 	end
 
 	return player_val > banker_val and PLAYER or BANKER
 end
 
-local function user_bet()
+local function get_user_bet()
 	while true do
 		io.write("Enter your bet : ")
-
 		local bet = tonumber(io.read())
 
-		if bet ~= nil then
+		if bet then
 			return bet
 		end
 
@@ -25,14 +28,57 @@ local function user_bet()
 	end
 end
 
+local function get_user_choice()
+	local prompt_choice =
+		string.format("Enter your choice, %s(%s) or %s(%s) : ", PLAYER, player_sign, BANKER, banker_sign)
+
+	while true do
+		io.write(prompt_choice)
+		local choice = io.read()
+
+		if choice ~= player_sign and choice ~= banker_sign then
+			print("Invalid choice! Please input valid one.")
+		else
+			return choice == player_sign and PLAYER or BANKER
+		end
+	end
+end
+
+local function cash_deduction(user_cash, user_bet)
+    return user_cash - user_bet
+end
+
+local function cash_process(winner, user_choice, user_bet, user_cash)
+	if winner == user_choice then
+        local cash_win = user_bet * 2
+		user_cash = user_cash + cash_win
+
+        print('win : ' .. cash_win)
+	end
+
+    return user_cash
+end
+
+
+CASH = 1000
 math.randomseed(os.time())
 
-print("Bet Game")
+print("Bet Game: Play Until You Run Out of Cash")
 
-local player_val = math.random()
-local banker_val = math.random()
+repeat
+    print("CASH : " .. CASH)
+    local player_val = math.random()
+    local banker_val = math.random()
 
-local bet = user_bet()
-local winner = winner_result(player_val, banker_val)
+    local bet = get_user_bet()
+    CASH = cash_deduction(CASH, bet)
+    local choice = get_user_choice()
+    local winner = winner_result(player_val, banker_val)
 
-print("Outcome : " .. winner)
+    if winner then
+        print("Winner : " .. winner)
+        CASH = cash_process(winner, choice, bet, CASH)
+    end
+until CASH <= 0
+
+print("You ran out of money. Better luck next time!")
