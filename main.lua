@@ -51,10 +51,6 @@ local function get_user_choice()
 	end
 end
 
-local function cash_deduction(user_cash, user_bet)
-    return user_cash - user_bet
-end
-
 local function cash_process(winner, user_choice, user_bet, user_cash)
 	if winner == user_choice then
         local cash_win = user_bet * 2
@@ -62,6 +58,8 @@ local function cash_process(winner, user_choice, user_bet, user_cash)
 
         print('win : ' .. cash_win)
 	end
+
+    user_cash = user_cash - user_bet
 
     return user_cash
 end
@@ -78,7 +76,6 @@ repeat
     local banker_val = number_values()
 
     local bet = get_user_bet()
-    CASH = cash_deduction(CASH, bet)
     local choice = get_user_choice()
     local winner = winner_result(player_val, banker_val)
 
