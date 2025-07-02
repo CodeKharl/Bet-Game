@@ -6,7 +6,14 @@ BANKER = "Banker"
 player_sign = PLAYER:sub(1, 1)
 banker_sign = BANKER:sub(1, 1)
 
+local function number_values() 
+    return math.random(1, 10)
+end
+
 local function winner_result(player_val, banker_val)
+    print(PLAYER .. " : " .. player_val)
+    print(BANKER .. " : " .. banker_val)
+
 	if player_val == banker_val then
 		print("Draw!")
 		return nil
@@ -67,8 +74,8 @@ print("Bet Game: Play Until You Run Out of Cash")
 
 repeat
     print("CASH : " .. CASH)
-    local player_val = math.random()
-    local banker_val = math.random()
+    local player_val = number_values()
+    local banker_val = number_values()
 
     local bet = get_user_bet()
     CASH = cash_deduction(CASH, bet)
