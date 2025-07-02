@@ -20,5 +20,5 @@ A simple command-line game where you choose who will win — the **Player** or t
 
 ## 🛠️ Requirements
 
-- Lua (if it's written in Lua) or another language runtime as applicable
+- Lua language runtime as applicable
 - Any terminal or command line interface
